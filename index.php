@@ -1,6 +1,10 @@
 <?php
+
+use Utility\Assignment;
+
 require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/utility/Assignment.php';
+
+//require_once __DIR__ . '/utility/Assignment.php';
 
 //is_dir('./tmp') ?: mkdir('./tmp');
 // 获取到cookie
@@ -8,4 +12,6 @@ require_once __DIR__ . '/utility/Assignment.php';
 
 //getData::getList();
 
-Assignment::assign();
+$params = Assignment::assign();
+
+print_r($params);

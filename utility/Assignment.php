@@ -19,13 +19,13 @@ class Assignment
         $this->_action = htmlspecialchars(trim($_GET['a']));
     }
 
-    public static function assign()
+    public function assign()
     {
-        $controller = empty(self::_controller) ? 'Index' : self::_controller;
-        $action = empty(self::_action) ? 'index' : self::_action;
+        $controller = empty(self::$_controller) ? 'Index' : self::$_controller;
+        $action = empty(self::$_action) ? 'index' : self::$_action;
         return [
-            $controller,
-            $action,
+            'controller' =>ucfirst($controller) . 'Controller',
+            'action' => 'action' . ucfirst($action),
         ];
     }
 

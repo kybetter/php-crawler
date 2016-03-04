@@ -1,5 +1,6 @@
 <?php
 
+
 class webSite
 {
     public static $website = array(

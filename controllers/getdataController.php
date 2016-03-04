@@ -1,6 +1,8 @@
 <?php
 
-class getData
+namespace Controllers;
+
+class getdataController
 {
     public static $header = array(
         "Cookie: " . _Cookie,
