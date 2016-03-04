@@ -1,17 +1,24 @@
 <?php
 
-use Utility\Assignment;
-
 require_once __DIR__ . '/vendor/autoload.php';
 
-//require_once __DIR__ . '/utility/Assignment.php';
+$config = \Utility\Helpers::merge(
+    require __DIR__ . '/config/' . 'main.php',
+    require __DIR__ . '/config/' . 'main-local.php'
+);
 
-//is_dir('./tmp') ?: mkdir('./tmp');
-// 获取到cookie
-//define('_Cookie', LoginController::login());
+\Utility\Helpers::C($config);
 
-//getData::getList();
+$params = new \Utility\Assignment();
+$params = $params->assign();
 
-$params = Assignment::assign();
+$controllerStr = '\\Controllers\\' . $params['controller'];
+$actionStr = $params['action'];
 
-print_r($params);
+// controller文件
+$controllerFile = __DIR__ . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $params['controller'] . '.php';
+
+is_file($controllerFile) ? $controllerObj = new $controllerStr() : die($controllerStr . '不存在');
+
+method_exists($controllerObj, $actionStr) ? $controllerObj->$actionStr()
+    : die($controllerStr . '->' . $actionStr . '不存在');

@@ -15,14 +15,16 @@ class Assignment
 
     public function __construct()
     {
-        $this->_controller = htmlspecialchars(trim($_GET['c']));
-        $this->_action = htmlspecialchars(trim($_GET['a']));
+        $c = isset($_GET['c']) ? $_GET['c'] : 'Index';
+        $a = isset($_GET['a']) ? $_GET['a'] : 'index';
+        $this->_controller = htmlspecialchars(trim($c));
+        $this->_action = htmlspecialchars(trim($a));
     }
 
     public function assign()
     {
-        $controller = empty(self::$_controller) ? 'Index' : self::$_controller;
-        $action = empty(self::$_action) ? 'index' : self::$_action;
+        $controller = empty($this->_controller) ? 'Index' : $this->_controller;
+        $action = empty($this->_action) ? 'index' : $this->_action;
         return [
             'controller' =>ucfirst($controller) . 'Controller',
             'action' => 'action' . ucfirst($action),
