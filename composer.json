@@ -1,0 +1,16 @@
+{
+    "name": "kybetter/phpcrawler",
+    "authors": [
+        {
+            "name": "zhaoliang",
+            "email": "kybetter@163.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Utility\\": "utility/",
+            "Controllers": "controllers/"
+        }
+    }
+}
