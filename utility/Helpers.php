@@ -83,6 +83,7 @@ class Helpers
     }
 
     /**
+     * C函数,设置和读取配置
      * @param null $key
      * @param null $value
      * @return array

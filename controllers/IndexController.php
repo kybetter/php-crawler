@@ -12,6 +12,14 @@ class IndexController extends Controller
 {
     public function actionIndex()
     {
+
+    }
+
+    /**
+     * 登录获取cookie
+     */
+    public function actionLogin()
+    {
         $login = $this->login();
         if ($login) {
             echo 'login success';
@@ -20,6 +28,70 @@ class IndexController extends Controller
         }
     }
 
+    /**
+     * 获取列表,写入文件
+     */
+    public function actionList()
+    {
+        $this->getList(1);
+    }
+
+    public function actionDetail()
+    {
+        $this->getDetail();
+    }
+
+    /**
+     * 解析列表
+     * @param $nums
+     */
+    private function getList($nums)
+    {
+        is_dir(Helpers::C('home_path') . '/tmp/list') ?: mkdir(Helpers::C('home_path') . '/tmp/list');
+        $pattern = Helpers::C('list_pattern');
+        for ($i = 1; $i <= $nums; $i++) {
+            $listData = Helpers::httpGet($this->listUrl($i), Helpers::C('header'));
+            preg_match_all($pattern, $listData, $res);
+            $res = "<?php\r\n return " . var_export($res[1], true) . "\r\n";
+            file_put_contents(Helpers::C('home_path') . '/tmp/list/' . $i . '.php', $res);
+        }
+
+    }
+
+    /**
+     * 解析详情
+     */
+    private function getDetail($id)
+    {
+        Helpers::httpGet($this->detailUrl($id), Helpers::C('header'));
+    }
+
+    /**
+     * 设置列表的url
+     * @param $page
+     * @return string
+     */
+    private function listUrl($page)
+    {
+        $listUrl = Helpers::C('list_url') . '?page=%d';
+        return sprintf($listUrl, (int) $page);
+    }
+
+    /**
+     * 设置详情的url
+     * @param string $id
+     * @return string
+     */
+    private function detailUrl($id)
+    {
+        $detailUrl = Helpers::C('main_page') . '/pt/%s/detail';
+        return sprintf($detailUrl, $id);
+    }
+
+    /**
+     * 登录拿到cookie
+     * @return mixed|null
+     */
     public function login()
     {
         is_dir(Helpers::C('home_path') . '/tmp') ?: mkdir(Helpers::C('home_path') . '/tmp');
@@ -31,7 +103,7 @@ class IndexController extends Controller
             // 登录
             $data = 'user_acc=' . Helpers::C('login_account')
                 . '&user_pwd=' . Helpers::C('login_password');
-            $subject = Helpers::httpPost(Helpers::C('login_page'), $data);
+            $subject = Helpers::httpPost(Helpers::C('login_page'), $data, Helpers::C('header'));
             $login_info_written = file_put_contents(Helpers::C('home_path') . '/tmp/login_info', $subject);
             if (!$login_info_written) {
                 return null;
