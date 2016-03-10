@@ -32,7 +32,7 @@ class Helpers
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); //禁用后cURL将终止从服务端进行验证
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false); //不检查SSL HOST
         curl_setopt($curl, CURLOPT_URL, $url); //设置发送的URL
-        curl_setopt($curl, CURLOPT_HEADER, true); //设为true则会有response header
+        curl_setopt($curl, CURLOPT_HEADER, false); //设为true则会有response header
         if ($header) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header); // 设置请求header
         }
